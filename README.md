@@ -1,3 +1,8 @@
+# Demo of `MMSegmentation` Toolbox 
+> Reproduce inference and training process using provided backbone and methods for semantic segmentation.
+
+## Installation
+
 ### Create a conda virtual environment and activate it.
 
 ```bash
