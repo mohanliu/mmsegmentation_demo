@@ -1,5 +1,5 @@
 # Demo of `MMSegmentation` Toolbox 
-> Reproduce inference and training processes using provided backbone and methods for semantic segmentation.
+> Reproduce inference and training processes using provided backbone and methods for semantic segmentation. Source Code: https://github.com/open-mmlab/mmsegmentation
 
 ## Installation
 
