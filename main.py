@@ -9,32 +9,13 @@ import argparse
 import numpy as np
 from PIL import Image
 
-from mmseg.datasets.builder import DATASETS
-from mmseg.datasets.custom import CustomDataset
+from semanticsegmentation.class_names import *
+from semanticsegmentation.dataset import *
+from semanticsegmentation.evaluation import *
 
 from mmseg.datasets import build_dataset
 from mmseg.models import build_segmentor
 from mmseg.apis import train_segmentor, set_random_seed, inference_segmentor
-
-# define class and plaette for better visualization
-classes = (
-    'sky', 'tree', 'road', 'grass', 
-    'water', 'bldg', 'mntn', 'fg obj'
-)
-
-palette = [
-    [128, 128, 128], [129, 127, 38], [120, 69, 125], [53, 125, 34], 
-    [0, 11, 123], [118, 20, 12], [122, 81, 25], [241, 134, 51]
-]
-
-@DATASETS.register_module()
-class StandfordBackgroundDataset(CustomDataset):
-  CLASSES = classes
-  PALETTE = palette
-  def __init__(self, split, **kwargs):
-    super().__init__(img_suffix='.jpg', seg_map_suffix='.png', 
-                     split=split, **kwargs)
-    assert os.path.exists(self.img_dir) and self.split is not None
     
 def main(args):
     cfg = mmcv.Config.fromfile(f'./experiments/config_standfordbackground_{args.version}.py')
@@ -74,6 +55,18 @@ def main(args):
                 "PALETTE": palette,
             }
         )
+    
+    # evaluation
+    if args.evaluation:
+        eval_ = evaluate_dataset(
+            checkpoint="{}/iter_{}.pth".format(cfg.work_dir, args.evaluation),
+            device='cuda:{}'.format(cfg.gpu_ids[0]),
+            config=cfg
+        )
+        print(f"Overall accuracy: {eval_[0]}")
+        print(f"Accuracies: {eval_[1]}")
+        print(f"IoUs: {eval_[2]}")
+        print(f"mIoU: {eval_[3]}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -82,6 +75,7 @@ if __name__ == "__main__":
     parser.add_argument("--config", "-C", action="store_true", help="Show config")
     parser.add_argument("--model", "-M", action="store_true", help="Show model")
     parser.add_argument("--train", "-T", action="store_true", help="Launch training")
+    parser.add_argument("--evaluation", "-E", type=int, help="Evaluation iteration")
 
     args = parser.parse_args()
     
