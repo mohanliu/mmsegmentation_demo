@@ -29,4 +29,9 @@ pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu110/torch1.7
 pip install git+https://github.com/open-mmlab/mmsegmentation.git
 ```
 
-## Dataset
+## Useful links
+
+- Pretrained backbone model: https://github.com/open-mmlab/mmcv/tree/master/mmcv/model_zoo
+- MMSegmentation Tutorial Docs: https://github.com/open-mmlab/mmsegmentation/tree/master/docs/tutorials
+- Prepare new dataset: https://github.com/open-mmlab/mmsegmentation/blob/master/demo/MMSegmentation_Tutorial.ipynb
+
