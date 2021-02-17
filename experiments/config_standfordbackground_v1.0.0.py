@@ -129,8 +129,9 @@ model = dict(
 )
 
 # yapf:disable
+# This log config controls the frequency of training step being stored in json.log file
 log_config = dict(
-    interval=25,
+    interval=5,
     hooks=[
         dict(type='TextLoggerHook', by_epoch=False),
         # dict(type='TensorboardLoggerHook')
@@ -151,9 +152,9 @@ optimizer_config = dict()
 lr_config = dict(policy='poly', power=0.9, min_lr=1e-4, by_epoch=False)
 
 # runtime settings
-runner = dict(type='IterBasedRunner', max_iters=100)
-checkpoint_config = dict(by_epoch=False, interval=25)
-evaluation = dict(interval=50, metric='mIoU')
+runner = dict(type='IterBasedRunner', max_iters=100) # Max steps
+checkpoint_config = dict(by_epoch=False, interval=5) # Frequency to store checkpoints
+evaluation = dict(interval=10, metric='mIoU') # Frequency to provide evaluation using validation set
 
 # local params
 load_from = './checkpoints/pspnet_r50-d8_512x1024_40k_cityscapes_20200605_003338-2966598c.pth'
